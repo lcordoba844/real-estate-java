@@ -12,67 +12,66 @@ import model.User;
 
 public class DataUser {
 	
-	
-	
-	public static User getUser(String user, String pass) {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/real-estate";
-        String usernameDb = "root";
-        String passwordDb = "admin";
-        ResultSet resultSet = null;
-        User current_user = new User();
-		try {
-			 // Load the MySQL JDBC driver
-        	Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Establish a connection to the database
-            Connection connection = DriverManager.getConnection(jdbcUrl, usernameDb, passwordDb);
-            Statement statement = connection.createStatement();
-            String sqlQuery = "SELECT * FROM USERS WHERE USERS.username = ?1 AND USERS.password = ?2";
-            resultSet = statement.executeQuery(sqlQuery);
-            current_user.setUsername(resultSet.getString("username"));
-            current_user.setPassword(resultSet.getString("password")); 
-		} catch (ClassNotFoundException e) {
-			
-		} catch (SQLException e) {
-			
-		}
-		return current_user;
+	public static String setNewUser(String user, String pass) {
+        String username = user;
+        String password = pass;
+        if (username != null && password !=null) {
+        	try {
+        	boolean userExistent = validateExistance(username);
+        		
+        		
+        	} catch (Exception e) {}
+        	finally {}
+        }
+        return "el usuario...";
 	}
 	
 	
 	
 	
-	public static User getUser2(String username, String password) {
-	    String jdbcUrl = "jdbc:mysql://localhost:3306/real-estate";
-	    String usernameDb = "root";
-	    String passwordDb = "admin";
+	private static boolean validateExistance(String username) {
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			conn = ConnectionClass.Connect();
+			String sqlQuery = "SELECT * FROM users u WHERE u.username = ?";
+			statement = conn.prepareStatement(sqlQuery);
+			statement.setString(1, username);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			
+		} catch (ClassNotFoundException e) {
+			
+		} finally {return false;} 
+	}
+
+
+
+
+	public static User getUser(String username, String password) {
 	    User currentUser = null;
-	    Connection connection = null;
+	    Connection conn = null;
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	        Class.forName("com.mysql.cj.jdbc.Driver");
-	        connection = DriverManager.getConnection(jdbcUrl, usernameDb, passwordDb);
-	       
-	        // Prepare the SQL query with placeholders for parameters
-	        String sqlQuery = "SELECT * FROM USERS U WHERE U.username = ? AND U.password = ?";
-	        statement = connection.prepareStatement(sqlQuery);
-	        
-	        // Set the parameters for the prepared statement
+	    	conn = ConnectionClass.Connect();
+	        String sqlQuery = "SELECT * FROM users u WHERE u.username = ? AND u.password = ?";
+	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setString(1, username);
 	        statement.setString(2, password);
-	        System.out.println(username + password);
-	        
-	        // Execute the query
 	        resultSet = statement.executeQuery();
-	        
 	        // Check if a user with the given username and password exists
 	        if (resultSet.next()) {
 	            // Create a new User object and populate it with data from the result set
 	            currentUser = new User();
 	            currentUser.setUsername(resultSet.getString("username"));
 	            currentUser.setPassword(resultSet.getString("password"));
-	            // You can populate other fields of the User object here
 	        }
 	    } catch (ClassNotFoundException e) {
 	        // Handle ClassNotFoundException
@@ -89,8 +88,8 @@ public class DataUser {
 	            if (statement != null) {
 	                statement.close();
 	            }
-	            if (connection != null) {
-	                connection.close();
+	            if (conn != null) {
+	                conn.close();
 	            }
 	        } catch (SQLException e) {
 	            // Handle SQLException while closing resources

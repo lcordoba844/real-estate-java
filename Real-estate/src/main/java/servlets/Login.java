@@ -30,7 +30,7 @@ public class Login extends HttpServlet {
 		String username = (String) request.getAttribute("username");
 		String pass = (String) request.getAttribute("password");
 		try {
-				User current_user = DataUser.getUser2(username, pass);
+				User current_user = DataUser.getUser(username, pass);
 				if (current_user.getUsername() != null) {
 					HttpSession session = request.getSession(true);
 					session.setAttribute("username", username);
