@@ -22,7 +22,7 @@ public class ManageSession extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		session.invalidate();
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("index.html");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
