@@ -12,21 +12,31 @@ import model.User;
 
 public class DataUser {
 	
-	public static String setNewUser(String user, String pass) {
+	public static void setNewUser(String user, String pass) {
         String username = user;
         String password = pass;
         if (username != null && password !=null) {
         	try {
-        	boolean userExistent = validateExistance(username);
+	        	boolean userExistent = validateExistance(username);
+	        	if (!userExistent) {
+	        		Connection conn = ConnectionClass.Connect();
+	        		String sqlQuery = "INSERT INTO `real-estate`.`users` (`username`, `password`, `userType`) VALUES ('?', '?', 'user');";
+	        		PreparedStatement statement = conn.prepareStatement(sqlQuery);
+	        		statement.setString(1, username);
+	        		statement.setString(2, pass);
+	        	}	else {
+	        	
+	        	}
         		
+        	} catch (Exception e) {
         		
-        	} catch (Exception e) {}
-        	finally {}
+        	} finally {
+        		
+        	}
+        } else {
+        	
         }
-        return "el usuario...";
 	}
-	
-	
 	
 	
 	private static boolean validateExistance(String username) {
