@@ -8,47 +8,43 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dataAccessClasses.DataUser;
-import model.User;
 import util.PasswordHashing;
+import util.UserAlreadyExistsException;
 
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+/**
+ * Servlet implementation class CreateAccount
+ */
+@WebServlet("/CreateAccount")
+public class CreateAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-    public Login() {
+    public CreateAccount() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		String username = (String) request.getAttribute("username");
 		String passNotHashed = (String) request.getAttribute("password");
 		String pass = PasswordHashing.hashPassword(passNotHashed);
+		
 		try {
-				User current_user = DataUser.getUser(username, pass);
-				if (current_user.getUsername() != null) {
-					HttpSession session = request.getSession(true);
-					session.setAttribute("username", username);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("sesionIniciada.jsp");
-					dispatcher.forward(request,response);
-				} 
+		DataUser.addNewUser(username, pass);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.html");
+		dispatcher.forward(request,response);
+		} catch (UserAlreadyExistsException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
 		}
-		catch (Exception e) {
-			response.sendRedirect("errorDbConnection.html");
-		}
-		
-		
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
-		
 	}
 
 }

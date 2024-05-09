@@ -1,12 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-	    <title>Sesion Iniciada</title>
+	    <title>Bootstrap Real Estate Page Template</title>
 	    <!-- Bootstrap -->
 	    <link href="bootstrap-4.4.1.css" rel="stylesheet">
 	</head>
@@ -37,7 +34,7 @@
 	            </div>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link disabled" href="#">CargarCasas</a>
+	            <a class="nav-link disabled" href="./cargarCasas.jsp">CargarCasas</a>
 	          </li>
 	        </ul>
 	 	    <form action="login.jsp" method="post" class="form-inline my-2 my-lg-0">
@@ -45,20 +42,8 @@
 		    </form>
 	      </div>
 	    </nav>
-	    <br>
-    	<div>
-			<h3>Sesion iniciada correctamente. Bienvenido, <%= (String) session.getAttribute("username") %> </h3>
-	
-			<form action="ManageSession" method="get">
-			<table>
-				<tr>
-					<td>Si desea cerrar sesion de click presione el siguiente boton</td>
-				</tr>
-				<tr>
-					<td><button type="submit">LogOut</button></td>
-				</tr>
-			</table>
-			</form>
-		</div>
+	    
+	    Aca va la explicación que guste sobre quienes somos y estilo.
+	    
 	</body>
 </html>

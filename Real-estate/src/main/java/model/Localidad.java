@@ -1,0 +1,20 @@
+package model;
+
+public class Localidad {
+	private Integer id;
+	private String descripcion;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
+}

@@ -1,64 +1,74 @@
 package dataAccessClasses;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-
+import util.PasswordHashing;
+import util.UserAlreadyExistsException;
 import model.User;
 
 public class DataUser {
 	
-	public static void setNewUser(String user, String pass) {
-        String username = user;
-        String password = pass;
-        if (username != null && password !=null) {
-        	try {
-	        	boolean userExistent = validateExistance(username);
-	        	if (!userExistent) {
-	        		Connection conn = ConnectionClass.Connect();
-	        		String sqlQuery = "INSERT INTO `real-estate`.`users` (`username`, `password`, `userType`) VALUES ('?', '?', 'user');";
-	        		PreparedStatement statement = conn.prepareStatement(sqlQuery);
-	        		statement.setString(1, username);
-	        		statement.setString(2, pass);
-	        	}	else {
-	        	
-	        	}
-        		
-        	} catch (Exception e) {
-        		
-        	} finally {
-        		
-        	}
-        } else {
-        	
-        }
+	public static void addNewUser(String user, String pass) throws IllegalArgumentException, UserAlreadyExistsException {
+	    if (user == null || pass == null) {
+	        throw new IllegalArgumentException("El usuario o la contraseña son null");
+	    }
+
+	    String username = user;
+	    String password = PasswordHashing.hashPassword(pass);
+
+	    if (password == null) {
+	        throw new IllegalArgumentException("Error al hashear la contraseña");
+	    }
+
+	    if (!validateExistance(username)) {
+	        try {
+	            Connection conn = ConnectionClass.Connect();
+	            String sqlQuery = "INSERT INTO `inmobiliaria`.`usuarios` (`nombre_usuario`, `contraseña`, `id_tipo_usuario`) VALUES (?, ?, '2');";
+	            PreparedStatement statement = conn.prepareStatement(sqlQuery);
+	            statement.setString(1, username);
+	            statement.setString(2, pass);
+	            statement.executeUpdate();
+	        } catch (SQLException | ClassNotFoundException e) {
+	            e.printStackTrace();
+	            // Manejar la excepción o lanzarla hacia arriba
+	        }
+	    } else {
+	        throw new UserAlreadyExistsException("El usuario ya existe");
+	    }
 	}
 	
 	
 	private static boolean validateExistance(String username) {
-		Connection conn = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		try {
-			conn = ConnectionClass.Connect();
-			String sqlQuery = "SELECT * FROM users u WHERE u.username = ?";
-			statement = conn.prepareStatement(sqlQuery);
-			statement.setString(1, username);
-			resultSet = statement.executeQuery();
-			if (resultSet.next()) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			
-		} catch (ClassNotFoundException e) {
-			
-		} finally {return false;} 
+	    Connection conn = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+	    try {
+	        conn = ConnectionClass.Connect();
+	        String sqlQuery = "SELECT * FROM usuarios u WHERE u.nombre_usuario = ?";
+	        statement = conn.prepareStatement(sqlQuery);
+	        statement.setString(1, username);
+	        resultSet = statement.executeQuery();
+	        return resultSet.next(); // Devuelve true si el nombre de usuario existe en la base de datos, de lo contrario, devuelve false
+	    } catch (SQLException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        try {
+	            if (resultSet != null) {
+	                resultSet.close();
+	            }
+	            if (statement != null) {
+	                statement.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace(); 
+	        }
+	    }
 	}
 
 
@@ -71,17 +81,15 @@ public class DataUser {
 	    ResultSet resultSet = null;
 	    try {
 	    	conn = ConnectionClass.Connect();
-	        String sqlQuery = "SELECT * FROM users u WHERE u.username = ? AND u.password = ?";
+	        String sqlQuery = "SELECT * FROM inmobiliaria.usuarios u WHERE u.nombre_usuario = ? AND u.contraseña = ?";
 	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setString(1, username);
 	        statement.setString(2, password);
 	        resultSet = statement.executeQuery();
-	        // Check if a user with the given username and password exists
 	        if (resultSet.next()) {
-	            // Create a new User object and populate it with data from the result set
 	            currentUser = new User();
-	            currentUser.setUsername(resultSet.getString("username"));
-	            currentUser.setPassword(resultSet.getString("password"));
+	            currentUser.setUsername(resultSet.getString("nombre_usuario"));
+	            currentUser.setPassword(resultSet.getString("contraseña"));
 	        }
 	    } catch (ClassNotFoundException e) {
 	        // Handle ClassNotFoundException

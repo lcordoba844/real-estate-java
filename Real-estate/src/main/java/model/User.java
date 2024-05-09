@@ -1,5 +1,4 @@
 package model;
-import java.io.PrintWriter;
 
 public class User {
 		private String username;

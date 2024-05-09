@@ -26,12 +26,17 @@ public class ManageSession extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getParameter("action");
 		String username = request.getParameter("txtName");
 		String password = request.getParameter("txtPass");
 		request.setAttribute("username", username);
 		request.setAttribute("password", password);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("Login");
-		dispatcher.forward(request,response);
+		if ("logIn".equals(action)) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Login");
+			dispatcher.forward(request,response);
+		} else if ("createAccount".equals(action)) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("CreateAccount");
+			dispatcher.forward(request,response);	
+		}
 	}
 }
-
