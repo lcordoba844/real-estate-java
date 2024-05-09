@@ -19,7 +19,7 @@ public class DataPropiedad {
 	    Connection conn = null;
 	    PreparedStatement statement = null;
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String tipo = prop.getTipo_propiedad();
 	        int cant_baños = prop.getCant_baños();
 	        int cant_dormitorios = prop.getCant_dormitorios();
@@ -33,8 +33,7 @@ public class DataPropiedad {
 	        boolean cochera = prop.tieneCochera();
 
 	        String sqlQuery;
-	        if (prop instanceof Casa) {
-	            Casa casa = (Casa) prop;
+	        if (prop instanceof Casa casa) {
 	            int cant_pisos = casa.getCant_pisos();
 	            double mts2_cubiertos = casa.getMts2cubiertos();
 	            double mts2_tot_terreno = casa.getMts2tot_terreno();
@@ -56,8 +55,7 @@ public class DataPropiedad {
 		        statement.setInt(11, id_localidad);
 		        statement.setDouble(12, precio); 
 		        
-	        } else if (prop instanceof Departamento){
-	            Departamento dpto = (Departamento) prop;
+	        } else if (prop instanceof Departamento dpto){
 	            boolean balcon = dpto.tieneBalcon();
 	            boolean terraza = dpto.tieneTerraza();
 	            String orientacion = dpto.getOrientacion();
@@ -84,7 +82,7 @@ public class DataPropiedad {
 	        }
 	        int rowsInserted = statement.executeUpdate();
 	        return rowsInserted > 0;
-	    } catch (ClassNotFoundException | SQLException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    } finally {
@@ -102,7 +100,7 @@ public class DataPropiedad {
 	    Connection conn = null;
 	    PreparedStatement statement = null;
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String tipo = prop.getTipo_propiedad();
 	        int cant_baños = prop.getCant_baños();
 	        int cant_dormitorios = prop.getCant_dormitorios();
@@ -168,7 +166,7 @@ public class DataPropiedad {
 	        }
 	        int rowsInserted = statement.executeUpdate();
 	        return rowsInserted > 0;
-	    } catch (ClassNotFoundException | SQLException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    } finally {
@@ -180,18 +178,17 @@ public class DataPropiedad {
 	        }
 	    }
 	}
-
-	public static Propiedad getOne(Integer id) {
+	
+	public static Propiedad getOne(Integer idPropiedad) {
 		Connection conn = null;
 		PreparedStatement statement = null; 
 		ResultSet resultSet = null;
-		String idString = id.toString();
 		Propiedad propiedad = null;
 		try {
-			conn = ConnectionClass.Connect();
+			conn = ConnectionClass.connect();
 			String sqlQuery = "SELECT * FROM propiedades p WHERE p.id_propiedad = ?";
 			statement = conn.prepareStatement(sqlQuery);
-			statement.setString(1, idString);
+			statement.setInt(1, idPropiedad);
 			resultSet = statement.executeQuery();
 			if (resultSet.next()) {
             	String descripcion = resultSet.getString("descripcion");
@@ -208,18 +205,18 @@ public class DataPropiedad {
 					int cant_pisos = resultSet.getInt("cant_pisos");
                 	double mts2cubiertos = resultSet.getDouble("mts2_cubiertos");
                 	double mts2totales = resultSet.getDouble("mts2_tot_terreno");
-                	propiedad = new Casa(id, cant_baños, cant_dormitorios, tipo, precio,
+                	propiedad = new Casa(idPropiedad, cant_baños, cant_dormitorios, tipo, precio,
                 			cochera, descripcion, lActual, direccion, estado, cant_pisos, mts2cubiertos, mts2totales);
 				} else if ("Departamento".equalsIgnoreCase(tipo)) {
 					boolean balcon = resultSet.getBoolean("balcon");
                 	boolean terraza = resultSet.getBoolean("terraza");
                 	String orientacion = resultSet.getString("orientacion");
                 	double mts2 = resultSet.getDouble("mts2_tot");
-                	propiedad = new Departamento(id, cant_baños, cant_dormitorios, tipo, precio,
+                	propiedad = new Departamento(idPropiedad, cant_baños, cant_dormitorios, tipo, precio,
                 			cochera, descripcion, lActual, direccion, estado, mts2, balcon, orientacion, terraza );
 				}
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 	        try {
@@ -246,7 +243,7 @@ public class DataPropiedad {
         ResultSet resultSet = null;
 
         try {
-            conn = ConnectionClass.Connect();
+            conn = ConnectionClass.connect();
             String sqlQuery = "SELECT * FROM propiedades";
             statement = conn.prepareStatement(sqlQuery);
             resultSet = statement.executeQuery();
@@ -281,7 +278,7 @@ public class DataPropiedad {
                 	listPropiedades.add(dpto);
                 }
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(); 
         } finally {
             try {
@@ -312,7 +309,7 @@ public class DataPropiedad {
 	    ResultSet localidadResultSet = null;
 	
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String locQuery = "SELECT * FROM localidades";
 	        locStmt = conn.prepareStatement(locQuery);
 	        localidadResultSet = locStmt.executeQuery();
@@ -362,7 +359,93 @@ public class DataPropiedad {
 	                }
 	            }
 	        }
-	    } catch (ClassNotFoundException | SQLException e) {
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	    	 try {
+	             if (localidadResultSet != null) {
+	                 localidadResultSet.close();
+	             }
+	             if (propiedadResultSet != null) {
+	            	 propiedadResultSet.close();
+	             }
+	             if (locStmt != null) {
+	            	 locStmt.close();
+	             }
+	             if (propStmt != null) {
+	            	 propStmt.close();
+	             }
+	             if (conn != null) {
+	                 conn.close();
+	             }
+	         } catch (SQLException e) {
+	             e.printStackTrace();
+	         }
+	    }
+	    return listPropiedades;
+	}
+	
+	public static List<Propiedad> getAllPropiedadesForCliente(int idCliente) {
+	    List<Propiedad> listPropiedades = new ArrayList<>();
+	    Connection conn = null;
+	    PreparedStatement propStmt = null;
+	    PreparedStatement locStmt = null;
+	    ResultSet propiedadResultSet = null;
+	    ResultSet localidadResultSet = null;
+	
+	    try {
+	        conn = ConnectionClass.connect();
+	        String locQuery = "SELECT * FROM localidades";
+	        locStmt = conn.prepareStatement(locQuery);
+	        localidadResultSet = locStmt.executeQuery();
+	     
+	        Map<Integer, Localidad> localidadesMap = new HashMap<>();
+	        while (localidadResultSet.next()) {
+	            Localidad localidad = new Localidad();
+	            localidad.setId(localidadResultSet.getInt("id_localidad"));
+	            localidad.setDescripcion(localidadResultSet.getString("descripcion"));
+	            localidadesMap.put(localidad.getId(), localidad);
+	        }
+	        
+	        String propQuery = "SELECT * FROM propiedades WHERE propiedades.id_cliente = ?";
+	        propStmt = conn.prepareStatement(propQuery);
+	        propStmt.setInt(1, idCliente);
+	        propiedadResultSet = propStmt.executeQuery();
+	        
+	        while (propiedadResultSet.next()) {
+	            int idLocalidad = propiedadResultSet.getInt("id_ciudad");
+	            Localidad localidad = localidadesMap.get(idLocalidad);
+	            if (localidad != null) {
+	            	int idActual = propiedadResultSet.getInt("id_propiedad");
+	            	String descripcion = propiedadResultSet.getString("descripcion");
+	            	int cant_dormitorios = propiedadResultSet.getInt("cant_dormitorios");
+	            	int cant_baños = propiedadResultSet.getInt("cant_baños");
+	            	boolean cochera = propiedadResultSet.getBoolean("cochera");
+	            	int id_localidad = propiedadResultSet.getInt("id_localidad");
+	            	String estado = propiedadResultSet.getString("estado");
+	            	String direccion = propiedadResultSet.getString("direccion");
+	            	double precio = propiedadResultSet.getDouble("precio");
+	            	Localidad lActual = DataLocalidad.getOne(id_localidad);
+	                String tipoPropiedad = propiedadResultSet.getString("tipoPropiedad");
+	                if ("Casa".equals(tipoPropiedad)) {
+	                	int cant_pisos = propiedadResultSet.getInt("cant_pisos");
+	                	double mts2cubiertos = propiedadResultSet.getDouble("mts2_cubiertos");
+	                	double mts2totales = propiedadResultSet.getDouble("mts2_tot_terreno");
+	                    Casa casa = new Casa(idActual, cant_baños, cant_dormitorios, tipoPropiedad, precio,
+	                			cochera, descripcion, lActual, direccion, estado, cant_pisos, mts2cubiertos, mts2totales);
+	                    listPropiedades.add(casa);
+	                } else if ("Departamento".equals(tipoPropiedad)) {
+	                	boolean balcon = propiedadResultSet.getBoolean("balcon");
+	                	boolean terraza = propiedadResultSet.getBoolean("terraza");
+	                	String orientacion = propiedadResultSet.getString("orientacion");
+	                	double mts2 = propiedadResultSet.getDouble("mts2_tot");
+	                    Departamento dpto = new Departamento(idActual, cant_baños, cant_dormitorios, tipoPropiedad, precio,
+	                			cochera, descripcion, lActual, direccion, estado, mts2, balcon, orientacion, terraza );
+	                    listPropiedades.add(dpto);
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
 	    	 try {

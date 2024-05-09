@@ -10,6 +10,12 @@ public class Cliente {
 	private String mail;
 	private List<Propiedad> mis_propiedades;
 	
+	public List<Propiedad> getMis_propiedades() {
+		return mis_propiedades;
+	}
+	public void setMis_propiedades(List<Propiedad> mis_propiedades) {
+		this.mis_propiedades = mis_propiedades;
+	}
 	public int getId_cliente() {
 		return id_cliente;
 	}

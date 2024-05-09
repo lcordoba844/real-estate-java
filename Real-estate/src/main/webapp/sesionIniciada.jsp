@@ -11,7 +11,7 @@
 	    <link href="bootstrap-4.4.1.css" rel="stylesheet">
 	</head>
 	<body>
-	    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	      <a class="navbar-brand" href="./index.html">InmobiliariaP</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	      <span class="navbar-toggler-icon"></span>
@@ -22,22 +22,13 @@
 	            <a class="nav-link" href="./index.html">Inicio<span class="sr-only">(current)</span></a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link" href="./contacto.html">Contacto</a>
+	            <a class="nav-link" href="./contacto.html">Casas</a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link" href="./quienesSomos.html">Quiénes Somos</a>
-	          </li>
-	          <li class="nav-item dropdown">
-	            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Propiedades</a>
-	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	              <a class="dropdown-item" href="#">Acción</a>
-	              <a class="dropdown-item" href="#">Otra acción</a>
-	              <div class="dropdown-divider"></div>
-	              <a class="dropdown-item" href="#">Otra cosa</a>
-	            </div>
+	            <a class="nav-link" href="./quienesSomos.html">Departamentos</a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link disabled" href="#">CargarCasas</a>
+	            <a class="nav-link" href="#">ListarClientes</a>
 	          </li>
 	        </ul>
 	 	    <form action="login.jsp" method="post" class="form-inline my-2 my-lg-0">

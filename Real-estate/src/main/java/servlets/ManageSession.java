@@ -37,6 +37,10 @@ public class ManageSession extends HttpServlet {
 		} else if ("createAccount".equals(action)) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("CreateAccount");
 			dispatcher.forward(request,response);	
+		} else if ("logOut".equals(action)) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Logout");
+			dispatcher.forward(request, response);
 		}
 	}
+	
 }

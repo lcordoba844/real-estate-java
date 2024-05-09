@@ -26,6 +26,11 @@ public class Login extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = (String) request.getAttribute("username");
 		String passNotHashed = (String) request.getAttribute("password");
 		String pass = PasswordHashing.hashPassword(passNotHashed);
@@ -33,22 +38,13 @@ public class Login extends HttpServlet {
 				User current_user = DataUser.getUser(username, pass);
 				if (current_user.getUsername() != null) {
 					HttpSession session = request.getSession(true);
-					session.setAttribute("username", username);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("sesionIniciada.jsp");
+					session.setAttribute("current_user", current_user);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("inicioCliente.jsp");
 					dispatcher.forward(request,response);
 				} 
 		}
 		catch (Exception e) {
-			response.sendRedirect("errorDbConnection.html");
+			e.printStackTrace();
 		}
-		
-		
 	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-		
-	}
-
 }

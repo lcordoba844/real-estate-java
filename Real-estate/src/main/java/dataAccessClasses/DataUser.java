@@ -24,15 +24,14 @@ public class DataUser {
 
 	    if (!validateExistance(username)) {
 	        try {
-	            Connection conn = ConnectionClass.Connect();
+	            Connection conn = ConnectionClass.connect();
 	            String sqlQuery = "INSERT INTO `inmobiliaria`.`usuarios` (`nombre_usuario`, `contraseña`, `id_tipo_usuario`) VALUES (?, ?, '2');";
 	            PreparedStatement statement = conn.prepareStatement(sqlQuery);
 	            statement.setString(1, username);
 	            statement.setString(2, pass);
 	            statement.executeUpdate();
-	        } catch (SQLException | ClassNotFoundException e) {
+	        } catch (SQLException e) {
 	            e.printStackTrace();
-	            // Manejar la excepción o lanzarla hacia arriba
 	        }
 	    } else {
 	        throw new UserAlreadyExistsException("El usuario ya existe");
@@ -45,13 +44,13 @@ public class DataUser {
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String sqlQuery = "SELECT * FROM usuarios u WHERE u.nombre_usuario = ?";
 	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setString(1, username);
 	        resultSet = statement.executeQuery();
 	        return resultSet.next(); // Devuelve true si el nombre de usuario existe en la base de datos, de lo contrario, devuelve false
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    } finally {
@@ -80,7 +79,7 @@ public class DataUser {
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	    	conn = ConnectionClass.Connect();
+	    	conn = ConnectionClass.connect();
 	        String sqlQuery = "SELECT * FROM inmobiliaria.usuarios u WHERE u.nombre_usuario = ? AND u.contraseña = ?";
 	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setString(1, username);
@@ -91,14 +90,9 @@ public class DataUser {
 	            currentUser.setUsername(resultSet.getString("nombre_usuario"));
 	            currentUser.setPassword(resultSet.getString("contraseña"));
 	        }
-	    } catch (ClassNotFoundException e) {
-	        // Handle ClassNotFoundException
-	        e.printStackTrace();
 	    } catch (SQLException e) {
-	        // Handle SQLException
 	        e.printStackTrace();
 	    } finally {
-	        // Close resources in a finally block to ensure they are closed even if an exception occurs
 	        try {
 	            if (resultSet != null) {
 	                resultSet.close();
@@ -110,7 +104,6 @@ public class DataUser {
 	                conn.close();
 	            }
 	        } catch (SQLException e) {
-	            // Handle SQLException while closing resources
 	            e.printStackTrace();
 	        }
 	    }

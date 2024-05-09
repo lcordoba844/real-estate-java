@@ -13,7 +13,7 @@ public abstract class Propiedad {
 	private String direccion;
 	private Localidad localidad;
 	private String estado;
-	private List<Servicio> listado_servicios;
+	private List<Tarea> lista_tareas;
 	
 
 	public int getId_propiedad() {
@@ -76,5 +76,11 @@ public abstract class Propiedad {
 	}
 	public void setLocalidad(Localidad localidad) {
 		this.localidad = localidad;
+	}
+	public List<Tarea> getLista_tareas() {
+		return lista_tareas;
+	}
+	public void setLista_tareas(List<Tarea> lista_tareas) {
+		this.lista_tareas = lista_tareas;
 	}
 }

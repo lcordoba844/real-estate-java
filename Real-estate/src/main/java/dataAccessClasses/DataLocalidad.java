@@ -17,7 +17,7 @@ public class DataLocalidad {
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	    	conn = ConnectionClass.Connect();
+	    	conn = ConnectionClass.connect();
 	    	String sqlQuery = "SELECT * FROM localidades l";
 	    	statement = conn.prepareStatement(sqlQuery);
 	    	resultSet = statement.executeQuery();
@@ -28,7 +28,7 @@ public class DataLocalidad {
 	    		locActual.setDescripcion(resultSet.getString("descripcion"));
 	    		listLocalidades.add(locActual);
 	    	}
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	    	e.printStackTrace();
 	    } finally {
 	    	try {
@@ -53,7 +53,7 @@ public class DataLocalidad {
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String sqlQuery = "SELECT * FROM localidades l WHERE l.id_localidad = ?";
 	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setInt(1, id);
@@ -65,7 +65,7 @@ public class DataLocalidad {
 	        	l.setDescripcion(resultSet.getString("descripcion"));
 	        	return l;
 	        }    
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
 	        try {
@@ -90,7 +90,7 @@ public class DataLocalidad {
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        String sqlQuery = "SELECT * FROM localidades l WHERE l.descripcion = ?";
 	        statement = conn.prepareStatement(sqlQuery);
 	        statement.setString(1, descripcion);
@@ -102,7 +102,7 @@ public class DataLocalidad {
 	        	l.setDescripcion(resultSet.getString("descripcion"));
 	        	return l;
 	        }    
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
 	        try {
@@ -128,7 +128,7 @@ public class DataLocalidad {
 	    boolean success = false; 
 	    
 	    try {
-	        conn = ConnectionClass.Connect();
+	        conn = ConnectionClass.connect();
 	        Localidad lExiste = getFromDescription(nuevaLocalidad.getDescripcion());
 	        if (lExiste == null) { 
 	            String sqlQuery = "INSERT INTO localidades (descripcion) VALUES (?)";
@@ -139,7 +139,7 @@ public class DataLocalidad {
 	        } else {
 	            success = false;
 	        }
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        success = false;
 	    } finally {
@@ -161,14 +161,14 @@ public class DataLocalidad {
 	    boolean success = false; 
 	    int id = l.getId();
 	    try {
-	    	conn = ConnectionClass.Connect();
+	    	conn = ConnectionClass.connect();
 	    	String sqlQuery = "UPDATE localidades l SET (descripcion) = ? WHERE l.id_localidad = ?";
 	    	statement = conn.prepareStatement(sqlQuery);
 	    	statement.setString(1, nuevaDescripcion);
 	    	statement.setInt(2, id);
 	    	statement.executeUpdate();
 	    	success = true;
-	    } catch (SQLException | ClassNotFoundException e) {
+	    } catch (SQLException e) {
 	    	e.printStackTrace();
 	    	success = false;
 	    } finally {
