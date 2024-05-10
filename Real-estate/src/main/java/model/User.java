@@ -3,7 +3,7 @@ package model;
 public class User {
 		private String username;
 		private String password;
-		private Rol tipoUser;
+		private Rol rol;
 		
 		public static enum Rol {
 			ADMIN,
@@ -23,11 +23,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Rol getTipoUser() {
-		return tipoUser;
+	public Rol getRol() {
+		return rol;
 	}
-	public void setTipoUser(Rol tipoUser) {
-		this.tipoUser = tipoUser;
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 	
 }

@@ -22,11 +22,9 @@ public class CreateAccount extends HttpServlet {
        
     public CreateAccount() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String username = (String) request.getAttribute("username");
 		String passNotHashed = (String) request.getAttribute("password");
 		String pass = PasswordHashing.hashPassword(passNotHashed);
@@ -43,7 +41,6 @@ public class CreateAccount extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

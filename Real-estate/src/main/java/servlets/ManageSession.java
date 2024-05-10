@@ -31,16 +31,14 @@ public class ManageSession extends HttpServlet {
 		String password = request.getParameter("txtPass");
 		request.setAttribute("username", username);
 		request.setAttribute("password", password);
-		if ("logIn".equals(action)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("Login");
-			dispatcher.forward(request,response);
-		} else if ("createAccount".equals(action)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("CreateAccount");
-			dispatcher.forward(request,response);	
-		} else if ("logOut".equals(action)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("Logout");
-			dispatcher.forward(request, response);
-		}
+		String targetServlet = switch (action) {
+	        case "logIn" -> "Login";
+	        case "createAccount" -> "CreateAccount";
+	        case "logOut" -> "Logout";
+	        default -> null;
+		};
+	    RequestDispatcher dispatcher = request.getRequestDispatcher(targetServlet);
+	    dispatcher.forward(request, response);
 	}
 	
 }

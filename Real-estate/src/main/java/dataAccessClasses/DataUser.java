@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import util.PasswordHashing;
 import util.UserAlreadyExistsException;
 import model.User;
+import model.User.Rol;
 
 public class DataUser {
 	
@@ -78,6 +79,7 @@ public class DataUser {
 	    Connection conn = null;
 	    PreparedStatement statement = null;
 	    ResultSet resultSet = null;
+	    Rol rol = null;
 	    try {
 	    	conn = ConnectionClass.connect();
 	        String sqlQuery = "SELECT * FROM inmobiliaria.usuarios u WHERE u.nombre_usuario = ? AND u.contraseña = ?";
@@ -89,6 +91,12 @@ public class DataUser {
 	            currentUser = new User();
 	            currentUser.setUsername(resultSet.getString("nombre_usuario"));
 	            currentUser.setPassword(resultSet.getString("contraseña"));
+	            if ("Administrador".equalsIgnoreCase(resultSet.getString("tipoUsuario"))) {
+	            	currentUser.setRol(User.Rol.ADMIN);
+	            } else if ("Cliente".equalsIgnoreCase(resultSet.getString("tipoUsuario"))) {
+	            	currentUser.setRol(User.Rol.CLIENTE);
+	            }
+	            
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
