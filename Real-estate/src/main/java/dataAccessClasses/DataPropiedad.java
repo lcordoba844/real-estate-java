@@ -236,7 +236,7 @@ public class DataPropiedad {
 		return propiedad;
 	}
 	
-    public static List<Propiedad> getAllPropiedades() throws SQLException {
+    public static List<Propiedad> getAllPropiedades() {
         List<Propiedad> listPropiedades = new ArrayList<>();
         Connection conn = null;
         PreparedStatement statement = null;
@@ -255,20 +255,19 @@ public class DataPropiedad {
             	int cant_baños = resultSet.getInt("cant_baños");
             	boolean cochera = resultSet.getBoolean("cochera");
             	int id_localidad = resultSet.getInt("id_localidad");
-            	String tipo = resultSet.getString("tipoPropiedad");
+            	String tipo = resultSet.getString("tipo_propiedad");
             	String estado = resultSet.getString("estado");
             	String direccion = resultSet.getString("direccion");
             	double precio = resultSet.getDouble("precio");
-            	Localidad lActual = DataLocalidad.getOne(id_localidad);
-                if ("Casa".equals(tipo)) {
+            	Localidad lActual = null;// DataLocalidad.getOne(id_localidad);
+                if ("Casa".equalsIgnoreCase(tipo)) {
                 	int cant_pisos = resultSet.getInt("cant_pisos");
                 	double mts2cubiertos = resultSet.getDouble("mts2_cubiertos");
                 	double mts2totales = resultSet.getDouble("mts2_tot_terreno");
                 	Casa casa = new Casa(idActual, cant_baños, cant_dormitorios, tipo, precio,
                 			cochera, descripcion, lActual, direccion, estado, cant_pisos, mts2cubiertos, mts2totales );
                 	listPropiedades.add(casa);
-                }
-                else if ("Departamento".equals(tipo)) {
+                } else if ("Departamento".equalsIgnoreCase(tipo)) {
                 	boolean balcon = resultSet.getBoolean("balcon");
                 	boolean terraza = resultSet.getBoolean("terraza");
                 	String orientacion = resultSet.getString("orientacion");
@@ -327,7 +326,7 @@ public class DataPropiedad {
 	        propiedadResultSet = propStmt.executeQuery();
 	        
 	        while (propiedadResultSet.next()) {
-	            int idLocalidad = propiedadResultSet.getInt("id_ciudad");
+	            int idLocalidad = propiedadResultSet.getInt("id_localidad");
 	            Localidad localidad = localidadesMap.get(idLocalidad);
 	            if (localidad != null) {
 	            	int idActual = propiedadResultSet.getInt("id_propiedad");

@@ -61,7 +61,7 @@ public class DataLocalidad {
 	        
 	        if (resultSet.next()) {
 	        	Localidad l = new Localidad();
-	        	l.setId(resultSet.getInt("id_ciudad"));
+	        	l.setId(resultSet.getInt("id_localidad"));
 	        	l.setDescripcion(resultSet.getString("descripcion"));
 	        	return l;
 	        }    
