@@ -22,7 +22,7 @@ public class ManageSession extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		session.invalidate();
-		response.sendRedirect("index.html");
+		response.sendRedirect("index.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,7 +33,6 @@ public class ManageSession extends HttpServlet {
 		request.setAttribute("password", password);
 		String targetServlet = switch (action) {
 	        case "logIn" -> "Login";
-	        case "createAccount" -> "CreateAccount";
 	        case "logOut" -> "Logout";
 	        default -> null;
 		};

@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 public abstract class Propiedad {
+
 	private int id_propiedad;
 	private int cant_baños;
 	private int cant_dormitorios;
@@ -13,7 +14,9 @@ public abstract class Propiedad {
 	private String direccion;
 	private Localidad localidad;
 	private String estado;
+	private String orientacion;
 	private List<Tarea> lista_tareas;
+	private int id_propietario;
 	
 
 	public int getId_propiedad() {
@@ -82,5 +85,17 @@ public abstract class Propiedad {
 	}
 	public void setLista_tareas(List<Tarea> lista_tareas) {
 		this.lista_tareas = lista_tareas;
+	}
+	public String getOrientacion() {
+		return orientacion;
+	}
+	public void setOrientacion(String orientacion) {
+		this.orientacion = orientacion;
+	}
+	public int getId_propietario() {
+		return id_propietario;
+	}
+	public void setId_propietario(int id_propietario) {
+		this.id_propietario = id_propietario;
 	}
 }

@@ -7,7 +7,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>NavBarBro</title>
+		<title>NavBar</title>
 		<!-- Bootstrap -->
 	    <link href="bootstrap-4.4.1.css" rel="stylesheet">
 	    
@@ -34,16 +34,23 @@
 			        <li class="nav-item active">
 			        	<a class="nav-link" href=<%=rutaRedirect%>>Inicio</a>
 			        </li>
-			        <li class="nav-item">
-			        	<a class="nav-link disabled" href="./contacto.html">Propiedades</a>
+			        <li class="nav-item active">
+			        	<a class="nav-link" href="PropiedadServlet?action=listarTodasPropiedades">Mis Propiedades</a>
 			        </li>
 			        <li class="nav-item">
-			            <a class="nav-link disabled" href="#">Clientes</a>
 			        </li>
+			    <% 
+                	if (current_user != null && current_user.getRol() == User.Rol.ADMIN) { 
+	            %>
+	            	<li class="nav-item active">
+			        	<a class="nav-link" href="ClienteServlet">Clientes</a>
+			        </li>
+
+	            <% 
+	                } 
+	            %>
 		        </ul>
-		 	    
 		 	    <% if (current_user == null) { %>
-		 	    
 		 	    <form action="index.jsp" method="post">
 			    	<button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="action" value="logIn">Iniciar Sesión</button>
 			    </form>

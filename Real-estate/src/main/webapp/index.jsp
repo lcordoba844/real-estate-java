@@ -12,8 +12,6 @@
 	    <!-- Bootstrap -->
 	    <link href="bootstrap-4.4.1.css" rel="stylesheet">
 	    <script src="js]/bootstrap-4.4.1.js"></script>
-	    
-	    
 	</head>
 	<body>
 		<jsp:include page="navbar.jsp" />
@@ -21,6 +19,14 @@
 			<div class="row justify-content-center">
 		        <div class="col-lg-4">
 		            <h2 class="text-center mb-4">Iniciar Sesion</h2>
+		            <div style="color: red;">
+				        <% 
+				            String errorMessage = (String) request.getAttribute("errorMessage");
+				            if (errorMessage != null) {
+				        %>
+				            <p><%= errorMessage %></p>
+				        <% } %>
+    				</div>
 		            <form action="ManageSession" method="post">
 		                <div class="form-group">
 		                    <label for="txtName">Usuario</label>
@@ -30,9 +36,10 @@
 		                    <label for="txtPass">Contraseña</label>
 		                    <input type="password" class="form-control" id="txtPass" name="txtPass" placeholder="Ingrese su contraseña" required>
 		                </div>
-		                <button type="submit" class="btn btn-primary" name="action" value="logIn">Iniciar Sesión</button>
-		                <a href="#######" class="ml-2">Olvidaste tu contraseña?</a>
-		                <button type="submit" class="btn btn-link" name="action" value="createAccount">Crear una cuenta</button>
+		                <div class="d-flex align-items-center">
+		                	<button type="submit" class="btn btn-primary" name="action" value="logIn">Iniciar Sesión</button>
+		                	<a href="#######" class="ml-3">Olvidaste tu contraseña?</a>
+		                </div>
 		            </form>
 		        </div>
 		    </div>

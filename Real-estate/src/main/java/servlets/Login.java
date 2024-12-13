@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import dataAccessClasses.DataUser;
 import model.User;
+import model.User.Rol;
 import util.PasswordHashing;
 
 @WebServlet("/Login")
@@ -36,13 +37,21 @@ public class Login extends HttpServlet {
 		String pass = PasswordHashing.hashPassword(passNotHashed);
 		try {
 				User current_user = DataUser.getUser(username, pass);
-				if (current_user.getUsername() != null) {
+				if (current_user != null) {
 					HttpSession session = request.getSession(true);
 					session.setAttribute("current_user", current_user);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("inicioCliente.jsp");
-					dispatcher.forward(request,response);
-				} 
-		}
+					if (current_user.getRol() != Rol.ADMIN) {
+						RequestDispatcher dispatcher = request.getRequestDispatcher("inicioCliente.jsp");
+						dispatcher.forward(request, response);
+					} else {
+						RequestDispatcher dispatcher = request.getRequestDispatcher("inicioAdmin.jsp");
+						dispatcher.forward(request, response);
+					}
+				} else {
+				    request.setAttribute("errorMessage", "Usuario o contraseña incorrectos.");
+				    request.getRequestDispatcher("index.jsp").forward(request, response);
+				}
+			}
 		catch (Exception e) {
 			e.printStackTrace();
 		}

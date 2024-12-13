@@ -3,24 +3,42 @@ package model;
 public class Departamento extends Propiedad {
 	private double mts2Tot;
 	private boolean balcon;
-	private String orientacion;
 	private boolean terraza;
 	
-    public Departamento(int id_propiedad, int cant_baños, int cant_dormitorios, String tipo_propiedad, double precio, boolean cochera, String descripcion,
-    		Localidad localidad, String direccion, String estado, double mts2Tot, boolean balcon,String orientacion, boolean terraza) {
+    public Departamento( int cant_baños, int cant_dormitorios, String tipo_propiedad, double precio, boolean cochera, String descripcion,
+    		int id_propietario, String direccion, String estado, double mts2Tot, boolean balcon, String orientacion, boolean terraza) {
 		super();
-		this.setId_propiedad(id_propiedad);
 		this.setCant_baños(cant_baños);
 		this.setCant_dormitorios(cant_dormitorios);
 		this.setTipo_propiedad(tipo_propiedad);
 		this.setPrecio(precio);
 		this.setCochera(cochera);
 		this.setDescripcion(descripcion);
+		this.setId_propietario(id_propietario);
 		this.setDireccion(direccion);
 		this.setEstado(estado);
 		this.mts2Tot = mts2Tot;
 		this.balcon = balcon;
-		this.orientacion = orientacion;
+		this.setOrientacion(orientacion);
+		this.terraza = terraza;
+    }
+    
+    public Departamento(int idPropiedad, int cant_baños, int cant_dormitorios, String tipo_propiedad, double precio, boolean cochera, String descripcion,
+    		int id_propietario, String direccion, String estado, double mts2Tot, boolean balcon, String orientacion, boolean terraza) {
+		super();
+		this.setId_propiedad(idPropiedad);
+		this.setCant_baños(cant_baños);
+		this.setCant_dormitorios(cant_dormitorios);
+		this.setTipo_propiedad(tipo_propiedad);
+		this.setPrecio(precio);
+		this.setCochera(cochera);
+		this.setDescripcion(descripcion);
+		this.setId_propietario(id_propietario);
+		this.setDireccion(direccion);
+		this.setEstado(estado);
+		this.mts2Tot = mts2Tot;
+		this.balcon = balcon;
+		this.setOrientacion(orientacion);
 		this.terraza = terraza;
     }
 	
@@ -36,12 +54,7 @@ public class Departamento extends Propiedad {
 	public void setBalcon(boolean balcon) {
 		this.balcon = balcon;
 	}
-	public String getOrientacion() {
-		return orientacion;
-	}
-	public void setOrientacion(String orientacion) {
-		this.orientacion = orientacion;
-	}
+	
 	public boolean tieneTerraza() {
 		return terraza;
 	}

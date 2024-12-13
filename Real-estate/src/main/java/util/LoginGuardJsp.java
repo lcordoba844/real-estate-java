@@ -11,12 +11,11 @@ import model.User;
 public class LoginGuardJsp {	
 	
 	public static User guardJsp(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-		User current_user = null;
-		if(session.getAttribute("current_user") != null) {
-			current_user = (User) session.getAttribute("current_user");
-		} else {
+		User current_user = (User) session.getAttribute("current_user");
+		if(current_user == null) {
 			response.sendRedirect("./index.jsp");
-		}
+			return null;
+		} 
 		return current_user;
 	}
 }

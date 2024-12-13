@@ -8,14 +8,16 @@ public class Cliente {
 	private String apellido;
 	private String telefono;
 	private String mail;
-	private List<Propiedad> mis_propiedades;
 	
-	public List<Propiedad> getMis_propiedades() {
-		return mis_propiedades;
+	public Cliente() {};
+	
+	public Cliente(String nombre, String apellido, String telefono, String mail) {
+		this.setNombre(nombre);
+		this.setApellido(apellido);
+		this.setTelefono(telefono);
+		this.setMail(mail);
 	}
-	public void setMis_propiedades(List<Propiedad> mis_propiedades) {
-		this.mis_propiedades = mis_propiedades;
-	}
+
 	public int getId_cliente() {
 		return id_cliente;
 	}

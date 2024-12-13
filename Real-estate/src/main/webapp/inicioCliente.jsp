@@ -17,5 +17,9 @@
 	<body>
 		<jsp:include page="navbar.jsp" />
 	    <br>
+	    <% if (current_user != null) { %>
+	    	<p>Hola <%=current_user.getUsername() %></p>    
+		   <h5>Tu tipo de usuario es <%=current_user.getRol() %>.</h5>
+		   <%} %>
 	</body>
 </html>

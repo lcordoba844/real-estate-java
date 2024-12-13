@@ -91,9 +91,9 @@ public class DataUser {
 	            currentUser = new User();
 	            currentUser.setUsername(resultSet.getString("nombre_usuario"));
 	            currentUser.setPassword(resultSet.getString("contraseña"));
-	            if ("Administrador".equalsIgnoreCase(resultSet.getString("tipoUsuario"))) {
+	            if ("Administrador".equalsIgnoreCase(resultSet.getString("tipo_usuario"))) {
 	            	currentUser.setRol(User.Rol.ADMIN);
-	            } else if ("Cliente".equalsIgnoreCase(resultSet.getString("tipoUsuario"))) {
+	            } else if ("Cliente".equalsIgnoreCase(resultSet.getString("tipo_usuario"))) {
 	            	currentUser.setRol(User.Rol.CLIENTE);
 	            }
 	            
